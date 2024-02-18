@@ -31,7 +31,6 @@ ENV/
 *.swo
 # pytorch models
 *.pth
-!uvr5_weights/*.pth
 *.pth.tar
 result/
 .vscode/*
