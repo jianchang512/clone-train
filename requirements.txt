@@ -171,6 +171,3 @@ weasel==0.3.4
 websockets==11.0.3
 Werkzeug==3.0.1
 yarl==1.9.4
-mecab-python3==1.0.6
-unidic-lite==1.0.8
-cutlet
