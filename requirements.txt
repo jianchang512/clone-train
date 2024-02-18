@@ -157,7 +157,6 @@ torchaudio==2.2.0
 tqdm==4.66.2
 trainer==0.0.36
 transformers==4.37.2
--e git+https://github.com/jianchang512/clone-train.git@428fa35e9bb3970c38a90d3eb3f2818041191c20#egg=TTS
 typer==0.9.0
 typing_extensions==4.8.0
 tzdata==2024.1
@@ -172,3 +171,6 @@ weasel==0.3.4
 websockets==11.0.3
 Werkzeug==3.0.1
 yarl==1.9.4
+mecab-python3==1.0.6
+unidic-lite==1.0.8
+cutlet
