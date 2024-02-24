@@ -137,13 +137,13 @@ if __name__ == "__main__":
         "--num_epochs",
         type=int,
         help="Number of epochs to train. Default: 10",
-        default=2,
+        default=10,
     )
     parser.add_argument(
         "--batch_size",
         type=int,
         help="Batch size. Default: 4",
-        default=2,
+        default=4,
     )
     parser.add_argument(
         "--grad_acumm",
