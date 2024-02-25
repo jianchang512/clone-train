@@ -19,6 +19,7 @@ from TTS.demos.xtts_ft_demo.utils.cfg import TTSMODEL_DIR
 from TTS.tts.configs.xtts_config import XttsConfig
 from TTS.tts.models.xtts import Xtts
 import datetime
+import shutil
 
 wav_path=None
 
@@ -32,6 +33,7 @@ def load_model(xtts_checkpoint, xtts_config, xtts_vocab):
     global XTTS_MODEL
     clear_gpu_cache()
     if not xtts_checkpoint or not xtts_config or not xtts_vocab:
+        gr.Error('训练尚未结束，请稍等')
         return "You need to run the previous steps or manually set the `XTTS checkpoint path`, `XTTS config path`, and `XTTS vocab path` fields !!"
     config = XttsConfig()
     config.load_json(xtts_config)
@@ -45,9 +47,14 @@ def load_model(xtts_checkpoint, xtts_config, xtts_vocab):
     return "Model Loaded!"
 
 def run_tts(lang, tts_text, speaker_audio_file):
-    if XTTS_MODEL is None or not speaker_audio_file:
+    if XTTS_MODEL is None:
+        gr.Error("模型还未训练完毕或尚未加载，请稍等")
         return "You need to run the previous step to load the model !!", None, None
-
+    if speaker_audio_file and not speaker_audio_file.endswith(".wav"):
+        speaker_audio_file+='.wav'
+    if not speaker_audio_file or os.path.exists(speaker_audio_file):
+        gr.Error('必须填写参考音频')
+        return '必须填写参考音频',None,None
     gpt_cond_latent, speaker_embedding = XTTS_MODEL.get_conditioning_latents(audio_path=speaker_audio_file, gpt_cond_len=XTTS_MODEL.config.gpt_cond_len, max_ref_length=XTTS_MODEL.config.max_ref_len, sound_norm_refs=XTTS_MODEL.config.sound_norm_refs)
     out = XTTS_MODEL.inference(
         text=tts_text,
@@ -257,7 +264,7 @@ if __name__ == "__main__":
                         label="输入要合成的文字.",
                         value="你好啊，我亲爱的朋友.",
                     )
-                    tts_btn = gr.Button(value="使用训练的模型生成声音")
+                    tts_btn = gr.Button(value="使用训练的模型生成声音/测试效果")
 
                 with gr.Column() as col3:
                     progress_gen = gr.Label(
@@ -334,6 +341,9 @@ if __name__ == "__main__":
                 return msg, config_path, vocab_file, ft_xtts_checkpoint, speaker_wav
             
             def move_to_clone(model_name,model_file,vocab,cfg,audio_file):
+                if not wav_path or not os.path.exists(wav_path):
+                    gr.Error("必须填写参考音频")
+                    return
                 model_dir=os.path.join(os.getcwd(),f'models/mymodels/{model_name}')
                 os.makedirs(model_dir,exist_ok=True)
                 shutil.copy2(model_file,os.path.join(model_dir,'model.pth'))
