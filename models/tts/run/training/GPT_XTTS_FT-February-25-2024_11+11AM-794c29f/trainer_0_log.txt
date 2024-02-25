@@ -1,0 +1,29 @@
+ > Training Environment:
+ | > Backend: Torch
+ | > Mixed precision: False
+ | > Precision: float32
+ | > Num. of CPUs: 4
+ | > Num. of Torch Threads: 1
+ | > Torch seed: 1
+ | > Torch CUDNN: True
+ | > Torch CUDNN deterministic: False
+ | > Torch CUDNN benchmark: False
+ | > Torch TF32 MatMul: False
+ > Start Tensorboard: tensorboard --logdir=F:\python\clone-train\models/tts\run\training\GPT_XTTS_FT-February-25-2024_11+11AM-794c29f
+
+ > Model has 518442047 parameters
+
+[4m[1m > EPOCH: 0/1[0m
+ --> F:\python\clone-train\models/tts\run\training\GPT_XTTS_FT-February-25-2024_11+11AM-794c29f
+
+[1m > TRAINING (2024-02-25 11:11:22) [0m
+
+[1m   --> TIME: 2024-02-25 11:23:05 -- STEP: 0/9 -- GLOBAL_STEP: 0[0m
+     | > loss_text_ce: 0.03566989675164223  (0.03566989675164223)
+     | > loss_mel_ce: 5.093999862670898  (5.093999862670898)
+     | > loss: 5.129669666290283  (5.129669666290283)
+     | > grad_norm: 0  (0)
+     | > current_lr: 5e-06 
+     | > step_time: 601.6918  (601.6918196678162)
+     | > loader_time: 95.819  (95.81900715827942)
+

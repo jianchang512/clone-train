@@ -140,7 +140,7 @@ if __name__ == "__main__":
         "--num_epochs",
         type=int,
         help="Number of epochs to train. Default: 10",
-        default=1,
+        default=10,
     )
     parser.add_argument(
         "--batch_size",
@@ -211,18 +211,15 @@ if __name__ == "__main__":
                     xtts_checkpoint = gr.Textbox(
                         label="训练后模型保存路径:",
                         value="",
-                        interactive=False
                     )
                     xtts_config = gr.Textbox(
                         label="训练后模型配置文件:",
                         value="",
-                        interactive=False
                     )
 
                     xtts_vocab = gr.Textbox(
                         label="vocab文件:",
                         value="",
-                        interactive=False
                     )
             
             with gr.Row():
@@ -265,9 +262,6 @@ if __name__ == "__main__":
                     )
                     tts_output_audio = gr.Audio(label="生成的声音.")
                     reference_audio = gr.Audio(label="作为参考的音频.")
-            
-            move_btn = gr.Button(value="在clone-voice中使用它")
-            
             
             def update_refer(interface_components,new_label=""):
                 # Update the label of the textbox
@@ -333,24 +327,6 @@ if __name__ == "__main__":
                 
                 return msg, config_path, vocab_file, ft_xtts_checkpoint, speaker_wav
             
-            def move_to_clone(model_name,model_file,vocab,cfg,audio_file):
-                model_dir=os.path.join(os.getcwd(),f'models/mymodels/{model_name}')
-                os.makedirs(model_dir,exist_ok=True)
-                shutil.copy2(model_file,os.path.join(model_dir,'model.pth'))
-                shutil.copy2(vocab,os.path.join(model_dir,'vocab.json'))
-                shutil.copy2(cfg,os.path.join(model_dir,'config.json'))
-                shutil.copy2(audio_file,os.path.join(model_dir,'base.wav'))
-            
-            move_btn.click(
-                fn=move_to_clone,
-                inputs=[
-                    model_name,
-                    xtts_checkpoint,
-                    xtts_vocab,
-                    xtts_config,
-                    speaker_reference_audio
-                ]
-            )
             
             prompt_compute_btn.click(
                 fn=preprocess_dataset,

@@ -53,7 +53,7 @@ def format_audio_list(audio_files, target_language="en", out_path=None, buffer=0
     device = "cuda" if torch.cuda.is_available() else "cpu" 
 
     print("Loading Whisper Model!")
-    asr_model = WhisperModel("medium", download_root=r'F:\python\clone-train\models\faster',device=device, compute_type="float32")
+    asr_model = WhisperModel("medium", download_root=f'{os.getcwd()}/models/faster',device=device, compute_type="float32")
 
     metadata = {"audio_file": [], "text": [], "speaker_name": []}
 
@@ -70,32 +70,33 @@ def format_audio_list(audio_files, target_language="en", out_path=None, buffer=0
 
         wav = wav.squeeze()
         audio_total_size += (wav.size(-1) / sr)
-        segments, _ = asr_model.transcribe(audio_path, vad_filter=True,
-                                           vad_parameters=dict(
-                                               min_silence_duration_ms=500,
-                                               max_speech_duration_s=11), language=target_language)
-        text = ""
-        i = 0
-        for segment in segments:
-            text = segment.text
-            audio = wav[int(sr * segment.start):int(sr * segment.end)].unsqueeze(0)
+        if target_language.lower() in ["zh","ja","ko"]:
+            segments, _ = asr_model.transcribe(audio_path, vad_filter=True,
+                                               vad_parameters=dict(
+                                                   min_silence_duration_ms=500,
+                                                   max_speech_duration_s=10.5), language=target_language,initial_prompt="生亦何欢，生亦何哀，不亦快哉。" if target_language=='zh' else None)
+            text = ""
+            i = 0
+            for segment in segments:
+                text = segment.text
+                audio = wav[int(sr * segment.start):int(sr * segment.end)].unsqueeze(0)
 
-            audio_file_name, _ = os.path.splitext(os.path.basename(audio_path))
-            audio_file = f"wavs/{audio_file_name}_{str(i).zfill(8)}.wav"
-            absoulte_path = os.path.join(out_path, audio_file)
-            os.makedirs(os.path.dirname(absoulte_path), exist_ok=True)
-            if audio.size(-1) >= sr / 3:
-                torchaudio.save(absoulte_path,
-                                audio,
-                                sr
-                                )
-            else:
-                continue
-            i += 1
-            metadata["audio_file"].append(audio_file)
-            metadata["text"].append(text.strip())
-            metadata["speaker_name"].append(speaker_name)
-        continue
+                audio_file_name, _ = os.path.splitext(os.path.basename(audio_path))
+                audio_file = f"wavs/{audio_file_name}_{str(i).zfill(8)}.wav"
+                absoulte_path = os.path.join(out_path, audio_file)
+                os.makedirs(os.path.dirname(absoulte_path), exist_ok=True)
+                if audio.size(-1) >= sr / 3:
+                    torchaudio.save(absoulte_path,
+                                    audio,
+                                    sr
+                                    )
+                else:
+                    continue
+                i += 1
+                metadata["audio_file"].append(audio_file)
+                metadata["text"].append(text.strip())
+                metadata["speaker_name"].append(speaker_name)
+            continue
 
         segments, _ = asr_model.transcribe(audio_path, word_timestamps=True, language=target_language)
         segments = list(segments)
