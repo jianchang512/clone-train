@@ -52,7 +52,7 @@ def run_tts(lang, tts_text, speaker_audio_file):
         return "模型还未训练完毕或尚未加载，请稍等 !!", None, None
     if speaker_audio_file and not speaker_audio_file.endswith(".wav"):
         speaker_audio_file+='.wav'
-    if not speaker_audio_file or os.path.exists(speaker_audio_file):
+    if not speaker_audio_file or  not os.path.exists(speaker_audio_file):
         gr.Error('必须填写参考音频')
         return '必须填写参考音频',None,None
     gpt_cond_latent, speaker_embedding = XTTS_MODEL.get_conditioning_latents(audio_path=speaker_audio_file, gpt_cond_len=XTTS_MODEL.config.gpt_cond_len, max_ref_length=XTTS_MODEL.config.max_ref_len, sound_norm_refs=XTTS_MODEL.config.sound_norm_refs)
@@ -350,6 +350,7 @@ if __name__ == "__main__":
                 shutil.copy2(vocab,os.path.join(model_dir,'vocab.json'))
                 shutil.copy2(cfg,os.path.join(model_dir,'config.json'))
                 shutil.copy2(audio_file,os.path.join(model_dir,'base.wav'))
+                gr.Info('已复制到clone自定义模型目录下了，可以去使用咯')
             
             move_btn.click(
                 fn=move_to_clone,
