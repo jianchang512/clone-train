@@ -275,6 +275,7 @@ if __name__ == "__main__":
                     reference_audio = gr.Audio(label="作为参考的音频.")
             
             move_btn = gr.Button(value="在clone-voice中使用它")
+            copy_label=gr.Label(label="")
             
             
             def update_refer(interface_components,new_label=""):
@@ -345,10 +346,10 @@ if __name__ == "__main__":
                 global copying
                 if not wav_path or not os.path.exists(wav_path):
                     gr.Warning("必须填写参考音频")
-                    return
+                    return "必须填写参考音频"
                 if copying:
                     gr.Info('正在复制到clone中...')
-                    return
+                    return "正在复制到clone中"
                 gr.Info('开始复制到clone自定义模型下，请耐心等待提示完成')
                 copying=True
                 print(f'{model_name=}')
@@ -364,6 +365,7 @@ if __name__ == "__main__":
                 shutil.copy2(audio_file,os.path.join(model_dir,'base.wav'))
                 gr.Info('已复制到clone自定义模型目录下了，可以去使用咯')
                 copying=False
+                return "已复制到clone自定义模型目录下了，可以去使用咯"
             
             move_btn.click(
                 fn=move_to_clone,
@@ -373,6 +375,9 @@ if __name__ == "__main__":
                     xtts_vocab,
                     xtts_config,
                     speaker_reference_audio
+                ],
+                outputs=[
+                    copy_label
                 ]
             )
             
