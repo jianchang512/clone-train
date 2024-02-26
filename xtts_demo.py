@@ -22,6 +22,7 @@ import datetime
 import shutil
 
 wav_path=None
+copying=False
 
 def clear_gpu_cache():
     # clear the GPU cache
@@ -341,9 +342,20 @@ if __name__ == "__main__":
                 return msg, config_path, vocab_file, ft_xtts_checkpoint, speaker_wav
             
             def move_to_clone(model_name,model_file,vocab,cfg,audio_file):
+                global copying
                 if not wav_path or not os.path.exists(wav_path):
                     gr.Warning("必须填写参考音频")
                     return
+                if copying:
+                    gr.Info('正在复制到clone中...')
+                    return
+                gr.Info('开始复制到clone自定义模型下，请耐心等待提示完成')
+                copying=True
+                print(f'{model_name=}')
+                print(f'{model_file=}')
+                print(f'{vocab=}')
+                print(f'{cfg=}')
+                print(f'{audio_file=}')
                 model_dir=os.path.join(os.getcwd(),f'models/mymodels/{model_name}')
                 os.makedirs(model_dir,exist_ok=True)
                 shutil.copy2(model_file,os.path.join(model_dir,'model.pth'))
@@ -351,6 +363,7 @@ if __name__ == "__main__":
                 shutil.copy2(cfg,os.path.join(model_dir,'config.json'))
                 shutil.copy2(audio_file,os.path.join(model_dir,'base.wav'))
                 gr.Info('已复制到clone自定义模型目录下了，可以去使用咯')
+                copying=False
             
             move_btn.click(
                 fn=move_to_clone,
