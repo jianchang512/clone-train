@@ -153,7 +153,7 @@ if __name__ == "__main__":
         "--batch_size",
         type=int,
         help="Batch size. Default: 4",
-        default=2,
+        default=4,
     )
     parser.add_argument(
         "--grad_acumm",

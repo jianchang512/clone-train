@@ -1,0 +1,54 @@
+ > Training Environment:
+ | > Backend: Torch
+ | > Mixed precision: False
+ | > Precision: float32
+ | > Num. of CPUs: 4
+ | > Num. of Torch Threads: 1
+ | > Torch seed: 1
+ | > Torch CUDNN: True
+ | > Torch CUDNN deterministic: False
+ | > Torch CUDNN benchmark: False
+ | > Torch TF32 MatMul: False
+ > Start Tensorboard: tensorboard --logdir=F:\python\clone-train\models/tts\run\training\GPT_XTTS_FT-February-26-2024_01+17AM-9326c96
+
+ > Model has 518442047 parameters
+ > Training Environment:
+ | > Backend: Torch
+ | > Mixed precision: False
+ | > Precision: float32
+ | > Num. of CPUs: 4
+ | > Num. of Torch Threads: 4
+ | > Torch seed: 1
+ | > Torch CUDNN: True
+ | > Torch CUDNN deterministic: False
+ | > Torch CUDNN benchmark: False
+ | > Torch TF32 MatMul: False
+ > Start Tensorboard: tensorboard --logdir=F:\python\clone-train\models/tts\run\training\GPT_XTTS_FT-February-26-2024_01+20AM-9326c96
+
+ > Model has 518442047 parameters
+
+[4m[1m > EPOCH: 0/1[0m
+ --> F:\python\clone-train\models/tts\run\training\GPT_XTTS_FT-February-26-2024_01+20AM-9326c96
+
+[1m > TRAINING (2024-02-26 01:20:09) [0m
+
+[1m   --> TIME: 2024-02-26 01:27:50 -- STEP: 0/8 -- GLOBAL_STEP: 0[0m
+     | > loss_text_ce: 0.03653562813997269  (0.03653562813997269)
+     | > loss_mel_ce: 4.902468681335449  (4.902468681335449)
+     | > loss: 4.939004421234131  (4.939004421234131)
+     | > grad_norm: 0  (0)
+     | > current_lr: 5e-06 
+     | > step_time: 377.4304  (377.43041467666626)
+     | > loader_time: 78.9584  (78.9583842754364)
+
+
+[1m > EVALUATION [0m
+
+
+  [1m--> EVAL PERFORMANCE[0m
+     | > avg_loader_time: 18.760063409805298 [0m(+0)
+     | > avg_loss_text_ce: 0.04053594172000885 [0m(+0)
+     | > avg_loss_mel_ce: 4.260525703430176 [0m(+0)
+     | > avg_loss: 4.301061630249023 [0m(+0)
+
+ > BEST MODEL : F:\python\clone-train\models/tts\run\training\GPT_XTTS_FT-February-26-2024_01+20AM-9326c96\best_model_8.pth
